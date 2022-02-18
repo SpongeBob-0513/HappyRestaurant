@@ -10,9 +10,10 @@
   - Model 与数据库中的表对应，一个 Model 对应数据库中的一个表
   - DAO(Data Access Object) 数据访问对象，用来操作数据库
 
-   
 
-  # 项目中对SQL数据库引用
+# 项目中对SQL数据库引用
 
 ![image-20220217001741396](Game.assets/image-20220217001741396.png)
+
+![image-20220218124258604](Game.assets/image-20220218124258604.png)
 
