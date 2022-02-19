@@ -17,3 +17,6 @@
 
 ![image-20220218124258604](Game.assets/image-20220218124258604.png)
 
+# gitee仓库私人令牌
+
+8ccd4ff0fbad6a1b67dca8595b67cccc
