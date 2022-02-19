@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using Server.Controller;
+
 namespace Server.Server
 {
     /// <summary>
@@ -12,6 +14,7 @@ namespace Server.Server
         private IPEndPoint _ipEndPoint;
         private Socket serverSocket;
         private List<Client> clientList;
+        private ControllerManager controllerManager = new ControllerManager();
         
         public Server(){}
 
