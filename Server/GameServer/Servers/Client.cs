@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
+using Common;
 
-namespace Server.Server
+namespace GameServer.Servers
 {
     /// <summary>
     /// 与客户端之间进行通信
@@ -36,7 +37,7 @@ namespace Server.Server
                     Close(); // 没有接收到数据，断开连接
                 }
             
-                msg.ReadMessage(count);
+                msg.ReadMessage(count, OnProssMessage);
                 Start();
             }
             catch (Exception e)
@@ -47,6 +48,11 @@ namespace Server.Server
             
         }
 
+        private void OnProssMessage(RequestCode requestCode, ActionCode actionCode, string data)
+        {
+            server.HandleRequest(requestCode, actionCode, data, this);
+        }
+
         private void Close()
         {
             if (clientSocket != null)
@@ -54,6 +60,13 @@ namespace Server.Server
                 clientSocket.Close();
                 server.RemoveClient(this);
             }
+        }
+        
+        // 对返回给客户端的消息进行包装和发送
+        public void Send(RequestCode requestCode, string data)
+        {
+            byte[] bytes = Message.PackData(requestCode, data);
+            clientSocket.Send(bytes);
         }
     }
 }

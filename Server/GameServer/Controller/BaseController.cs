@@ -1,6 +1,7 @@
 ﻿using Common;
+using GameServer.Servers;
 
-namespace Server.Controller
+namespace GameServer.Controller
 {
     // 抽象 abstract 不能被实例化，也就是说不会有这种类的实例，相当于一个提示作用
     // 虚拟 virtual 
@@ -18,7 +19,7 @@ namespace Server.Controller
 
         public RequestCode RequestCode => _requestCode;
         
-        public virtual string DefaultHandle(string data)
+        public virtual string DefaultHandle(string data, Client client, Server server)
         {
             return null; // 默认返回空
         } 

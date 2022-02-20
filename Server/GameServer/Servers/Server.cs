@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using Server.Controller;
+using Common;
+using GameServer.Controller;
 
-namespace Server.Server
+namespace GameServer.Servers
 {
     /// <summary>
     /// 监听客户端的连接
@@ -14,12 +15,16 @@ namespace Server.Server
         private IPEndPoint _ipEndPoint;
         private Socket serverSocket;
         private List<Client> clientList;
-        private ControllerManager controllerManager = new ControllerManager();
-        
-        public Server(){}
+        private ControllerManager controllerManager;
+
+        public Server()
+        {
+            
+        }
 
         public Server(string ipStr, int port)
         {
+            controllerManager = new ControllerManager(this);
             SetIpAndPort(ipStr, port);
         }
 
@@ -50,6 +55,16 @@ namespace Server.Server
             {
                 clientList.Remove(client); 
             }
+        }
+
+        public void SendRespoonse(Client client, RequestCode requestCode, string data)
+        {
+            client.Send(requestCode, data);
+        }
+
+        public void HandleRequest(RequestCode requestCode, ActionCode actionCode, string data, Client client)
+        {
+            controllerManager.HandleRequest(requestCode, actionCode, data, client); // 减少耦合，client 只与 server 来进行交互
         }
     }
     
