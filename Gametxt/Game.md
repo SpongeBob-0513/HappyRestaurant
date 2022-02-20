@@ -1,4 +1,8 @@
-![image-20220107163322523](Game.assets/image-20220107163322523.png) 
+![image-20220107163322523](Game.assets/image-20220107163322523.png)
+
+ 客户端的 Request 用于请求的发起和请求的响应  服务器端的 controller 用于处理客户端的请求和给客户端响应   详细解释在视频教程 p29
+
+
 
 ![image-20220107170611736](Game.assets/image-20220107170611736.png)
 
