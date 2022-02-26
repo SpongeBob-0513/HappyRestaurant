@@ -52,11 +52,11 @@
         <Compile Include="Servers\Client.cs" />
         <Compile Include="Servers\Message.cs" />
         <Compile Include="Servers\Server.cs" />
+        <Compile Include="Tool\ConnHelper.cs" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="DAO" />
       <Folder Include="Model" />
-      <Folder Include="Tool" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Common\Common.csproj">
