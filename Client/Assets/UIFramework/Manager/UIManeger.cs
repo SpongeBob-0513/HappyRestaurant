@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Extension;
+using Manager;
 using Net;
 using UIFramework.UIPanel;
 using UIPanel;
