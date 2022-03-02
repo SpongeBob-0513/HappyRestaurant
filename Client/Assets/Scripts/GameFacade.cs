@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameFacade : MonoBehaviour
 {
-    private UIManeger uiMng;
+    private UIManager uiMng;
     private AudioManager audioMng;
     private PlayerManager playerMng;
     private CameraManager cameraMng;
@@ -16,7 +16,7 @@ public class GameFacade : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InitMng();
+        InitManager();
     }
 
     // Update is called once per frame
@@ -25,9 +25,9 @@ public class GameFacade : MonoBehaviour
         
     }
 
-      private void InitMng()
+      private void InitManager()
     {
-        uiMng = new UIManeger();
+        uiMng = new UIManager();
         audioMng = new AudioManager();
         playerMng = new PlayerManager();
         cameraMng = new CameraManager();
@@ -43,7 +43,7 @@ public class GameFacade : MonoBehaviour
         clientMng.OnInit();
     }
 
-    private void DestroryMng()
+    private void DestroryManager()
     {
         uiMng.OnDestroy();
         audioMng.OnDestroy();
@@ -56,6 +56,6 @@ public class GameFacade : MonoBehaviour
 
     private void OnDestroy()
     {
-        DestroryMng();
+        DestroryManager();
     }
 }

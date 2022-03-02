@@ -10,9 +10,9 @@ using UnityEngine;
 
 namespace UIFramework.Manager
 {
-    public class UIManeger:BaseManager
+    public class UIManager:BaseManager
     {
-        public UIManeger(GameFacade facade) : base(facade)
+        public UIManager(GameFacade facade) : base(facade)
         {
             ParseUIPanelTypeJson();
         }
