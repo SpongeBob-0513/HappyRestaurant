@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using Manager;
 using UnityEngine;
+using Common;
 
 namespace Net
 {
@@ -14,21 +15,59 @@ namespace Net
         private const int PORT = 6688;
 
         private Socket clientSocket;
+        private Message msg = new Message();
+
+        public ClientManager(GameFacade gameFacade) : base(gameFacade)
+        {
+        }
 
         public override void OnInit()
         {
             base.OnInit();
-            
+
             clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
                 clientSocket.Connect(IP, PORT);
+                Start();
             }
             catch (Exception e)
             {
                 Debug.LogWarning("无法连接到服务器端!!" + e);
                 throw;
             }
+        }
+
+        private void Start()
+        {
+            clientSocket.BeginReceive(msg.Data, msg.StartIndex, msg.RemainSize, SocketFlags.None, ReceiveCallback,
+                null); // 异步的消息接收
+        }
+
+        private void ReceiveCallback(IAsyncResult ar)
+        {
+            try
+            {
+                int count = clientSocket.EndReceive(ar);
+
+                msg.ReadMessage(count, prossDataCallback);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        private void prossDataCallback(RequestCode requestCode, string data)
+        {
+            // TODO
+        }
+
+        public void SendRequest(RequestCode requestCode, ActionCode actionCode, string data)
+        {
+            byte[] bytes = Message.PackData(requestCode, actionCode, data);
+            clientSocket.Send(bytes);
         }
 
         public override void OnDestroy()

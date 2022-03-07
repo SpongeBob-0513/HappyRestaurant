@@ -12,7 +12,7 @@ namespace UIFramework.Manager
 {
     public class UIManager:BaseManager
     {
-        public UIManager(GameFacade facade) : base(facade)
+        public UIManager(GameFacade gameFacade) : base(gameFacade)
         {
             ParseUIPanelTypeJson();
         }
