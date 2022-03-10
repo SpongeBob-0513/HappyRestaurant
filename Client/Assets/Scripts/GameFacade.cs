@@ -1,18 +1,34 @@
 using System;
+using Common;
 using Manager;
 using Net;
+using Request;
 using UIFramework.Manager;
 using UnityEngine;
 
 public class GameFacade : MonoBehaviour
 {
+    // 单例模式 整个客户端只设置这一个单例
+    private static GameFacade _instance;
+    public static GameFacade Instance => _instance;
+
     private UIManager uiMng;
     private AudioManager audioMng;
     private PlayerManager playerMng;
     private CameraManager cameraMng;
     private RequestManager requestMng;
     private ClientManager clientMng;
-    
+
+    private void Awake()
+    {
+        if (_instance != null)
+        {
+            Destroy(this.gameObject); return;
+        }
+
+        _instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,5 +73,20 @@ public class GameFacade : MonoBehaviour
     private void OnDestroy()
     {
         DestroryManager();
+    }
+
+    public void AddRequest(RequestCode requestCode, BaseRequest baseRequest)
+    {
+        requestMng.AddRequest(requestCode, baseRequest);
+    }
+
+    public void RemoveRequest(RequestCode requestCode)
+    {
+        requestMng.RemoveRequest(requestCode);
+    }
+
+    public void HandleResponse(RequestCode requestCode, string data)
+    {
+        requestMng.HandleResponse(requestCode, data);
     }
 }

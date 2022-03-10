@@ -51,6 +51,8 @@ namespace Net
                 int count = clientSocket.EndReceive(ar);
 
                 msg.ReadMessage(count, prossDataCallback);
+                
+                Start(); // 继续监听消息接收
             }
             catch (Exception e)
             {
@@ -61,7 +63,7 @@ namespace Net
 
         private void prossDataCallback(RequestCode requestCode, string data)
         {
-            // TODO
+            _gameFacade.HandleResponse(requestCode, data);
         }
 
         public void SendRequest(RequestCode requestCode, ActionCode actionCode, string data)
