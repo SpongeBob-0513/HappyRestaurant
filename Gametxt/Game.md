@@ -24,3 +24,16 @@
 # gitee仓库私人令牌
 
 8ccd4ff0fbad6a1b67dca8595b67cccc
+
+
+
+# 添加新 UI Panel 需要添加的地方
+
+![image-20220311164401169](Game.assets/image-20220311164401169.png)
+
+![image-20220311164417552](Game.assets/image-20220311164417552.png)
+
+# 有时间可了解
+
++ DoTween 的使用
++ 工程中的 UI 面板管理框架

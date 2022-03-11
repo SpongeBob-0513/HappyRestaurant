@@ -1,32 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Extension;
 using Manager;
-using Net;
-using UIFramework.UIPanel;
 using UIPanel;
 using UnityEngine;
 
 namespace UIFramework.Manager
 {
-    public class UIManager:BaseManager
+    public class UIManager : BaseManager
     {
-        public UIManager(GameFacade gameFacade) : base(gameFacade)
-        {
-            ParseUIPanelTypeJson();
-        }
+        /// 
+        /// 单例模式的核心
+        /// 1，定义一个静态的对象 在外界访问 在内部构造
+        /// 2，构造方法私有化
 
-        public override void OnInit()
-        {
-            base.OnInit();
-            PushPanel(UIPanelType.Message);
-            PushPanel(UIPanelType.Start);
-        }
+        //private static UIManager _instance;
 
+        //public static UIManager Instance
+        //{
+        //    get
+        //    {
+        //        if (_instance == null)
+        //        {
+        //            _instance = new UIManager();
+        //        }
+        //        return _instance;
+        //    }
+        //}
         private Transform canvasTransform;
 
-        public Transform CanvasTransform
+        private Transform CanvasTransform
         {
             get
             {
@@ -39,24 +42,47 @@ namespace UIFramework.Manager
             }
         }
 
-        private Dictionary<UIPanelType, string> panelPathDict;  // 存储所有面板 prefab 的路径
-        private Dictionary<UIPanelType, BasePanel> panelDict;  // 保存所有实例化面板的游戏物体上的 BasePanel 组件
+        private Dictionary<UIPanelType, string> panelPathDict; //存储所有面板Prefab的路径
+        private Dictionary<UIPanelType, BasePanel> panelDict; //保存所有实例化面板的游戏物体身上的BasePanel组件
         private Stack<BasePanel> panelStack;
         private MessagePanel msgPanel;
-        
-        
-        /// <summary>
-        /// 把某个页面入栈，把某个页面显示到界面上
-        /// </summary>
-        /// <param name="panelType"></param>
-        public void PushPanel(UIPanelType panelType)
+        private UIPanelType panelTypeToPush = UIPanelType.None;
+
+        public UIManager(GameFacade _gameFacade) : base(_gameFacade)
         {
-            if (panelStack.Count==null)
+            ParseUIPanelTypeJson();
+        }
+
+        public override void OnInit()
+        {
+            base.OnInit();
+            PushPanel(UIPanelType.Message);
+            PushPanel(UIPanelType.Start);
+        }
+
+        public override void Update()
+        {
+            if (panelTypeToPush != UIPanelType.None)
             {
-                panelStack = new Stack<BasePanel>();
+                PushPanel(panelTypeToPush);
+                panelTypeToPush = UIPanelType.None;
             }
-            
-            // 判断栈里面是否有页面
+        }
+
+        public void PushPanelSync(UIPanelType panelType)
+        {
+            panelTypeToPush = panelType;
+        }
+
+        /// <summary>
+        /// 把某个页面入栈，  把某个页面显示在界面上
+        /// </summary>
+        public BasePanel PushPanel(UIPanelType panelType)
+        {
+            if (panelStack == null)
+                panelStack = new Stack<BasePanel>();
+
+            //判断一下栈里面是否有页面
             if (panelStack.Count > 0)
             {
                 BasePanel topPanel = panelStack.Peek();
@@ -66,32 +92,31 @@ namespace UIFramework.Manager
             BasePanel panel = GetPanel(panelType);
             panel.OnEnter();
             panelStack.Push(panel);
+            return panel;
         }
-        
+
         /// <summary>
-        /// 出栈，把页面从界面上移除
+        /// 出栈 ，把页面从界面上移除
         /// </summary>
         public void PopPanel()
         {
             if (panelStack == null)
-            {
                 panelStack = new Stack<BasePanel>();
-            }
 
             if (panelStack.Count <= 0) return;
-            
-            // 关闭栈顶页面的显示
+
+            //关闭栈顶页面的显示
             BasePanel topPanel = panelStack.Pop();
             topPanel.OnExit();
-            
-            if(panelStack.Count <=0) return;
+
+            if (panelStack.Count <= 0) return;
             BasePanel topPanel2 = panelStack.Peek();
             topPanel2.OnResume();
         }
+
         /// <summary>
         /// 根据面板类型 得到实例化的面板
         /// </summary>
-        /// <param name="panelType"></param>
         /// <returns></returns>
         private BasePanel GetPanel(UIPanelType panelType)
         {
@@ -100,15 +125,21 @@ namespace UIFramework.Manager
                 panelDict = new Dictionary<UIPanelType, BasePanel>();
             }
 
+            //BasePanel panel;
+            //panelDict.TryGetValue(panelType, out panel);//TODO
+
             BasePanel panel = panelDict.TryGet(panelType);
 
             if (panel == null)
             {
                 //如果找不到，那么就找这个面板的prefab的路径，然后去根据prefab去实例化面板
+                //string path;
+                //panelPathDict.TryGetValue(panelType, out path);
                 string path = panelPathDict.TryGet(panelType);
                 GameObject instPanel = GameObject.Instantiate(Resources.Load(path)) as GameObject;
                 instPanel.transform.SetParent(CanvasTransform, false);
                 instPanel.GetComponent<BasePanel>().UIMng = this;
+                instPanel.GetComponent<BasePanel>().Facade = _gameFacade;
                 panelDict.Add(panelType, instPanel.GetComponent<BasePanel>());
                 return instPanel.GetComponent<BasePanel>();
             }
@@ -117,7 +148,7 @@ namespace UIFramework.Manager
                 return panel;
             }
         }
-        
+
         [Serializable]
         class UIPanelTypeJson
         {
@@ -126,13 +157,15 @@ namespace UIFramework.Manager
 
         private void ParseUIPanelTypeJson()
         {
-            panelDict = new Dictionary<UIPanelType, BasePanel>();
+            panelPathDict = new Dictionary<UIPanelType, string>();
 
             TextAsset ta = Resources.Load<TextAsset>("UIPanelType");
-            
+
             UIPanelTypeJson jsonObject = JsonUtility.FromJson<UIPanelTypeJson>(ta.text);
+
             foreach (UIPanelInfo info in jsonObject.infoList)
             {
+                //Debug.Log(info.panelType);
                 panelPathDict.Add(info.panelType, info.path);
             }
         }
@@ -141,14 +174,26 @@ namespace UIFramework.Manager
         {
             this.msgPanel = msgPanel;
         }
-        
+
         public void ShowMessage(string msg)
         {
             if (msgPanel == null)
             {
-                Debug.Log("无法显示提示信息，MsgPanel 为空"); return;
+                Debug.Log("无法显示提示信息，MsgPanel为空");
+                return;
             }
+
             msgPanel.ShowMessage(msg);
         }
+
+        /// <summary>Z
+        /// just for test
+        /// </summary>
+        //public void Test()
+        //{
+        //    string path ;
+        //    panelPathDict.TryGetValue(UIPanelType.Knapsack,out path);
+        //    Debug.Log(path);
+        //}
     }
 }

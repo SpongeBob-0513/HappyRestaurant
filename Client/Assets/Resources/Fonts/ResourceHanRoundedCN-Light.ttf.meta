@@ -1,0 +1,26 @@
+fileFormatVersion: 2
+guid: bce083ad755c2384295321db5f3fdf0b
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Resource Han Rounded CN
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 73cdbfc58a9117747b110e5e6c187cfa, type: 3}
+  - {fileID: 12800000, guid: c6b82d407493d334f998a575b0adc408, type: 3}
+  - {fileID: 12800000, guid: 48aa0704ed7a25e41be579a3852a3376, type: 3}
+  - {fileID: 12800000, guid: 38da46528e4a8cb4590216d014e93331, type: 3}
+  - {fileID: 12800000, guid: 02584c9ee2487c049ad5fcc850453892, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
