@@ -1080,6 +1080,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2101769599859189313, guid: 01952d0fe5566f448a865f8e4aeb48d5, type: 3}
+      propertyPath: m_Name
+      value: CloseButton
+      objectReference: {fileID: 0}
     - target: {fileID: 4834362565130762536, guid: 01952d0fe5566f448a865f8e4aeb48d5, type: 3}
       propertyPath: m_Name
       value: RegisterPanel

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UIPanel;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,14 +18,16 @@ public class MessagePanel : BasePanel
 
     public void ShowMessage(string msg)
     {
-        text.color = Color.white; // 将透明度重新置为 1.
+        text.DOFade(1, 0);
+        //text.color = Color.white; // 将透明度重新置为 1.
         text.text = msg;
-        text.enabled = true;
+        text.enabled = true;    
         Invoke("Hide", showTime);
     }
 
     private void Hide()
     {
-        text.CrossFadeAlpha(0, showTime, false);
+        text.DOFade(0 , showTime);
+        // text.CrossFadeAlpha(0, showTime, false);
     }
 }
