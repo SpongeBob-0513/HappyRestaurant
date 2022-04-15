@@ -18,8 +18,7 @@ public class MessagePanel : BasePanel
 
     public void ShowMessage(string msg)
     {
-        text.DOFade(1, 0);
-        //text.color = Color.white; // 将透明度重新置为 1.
+        text.CrossFadeAlpha(1, 0.2f, false);
         text.text = msg;
         text.enabled = true;    
         Invoke("Hide", showTime);
@@ -27,7 +26,7 @@ public class MessagePanel : BasePanel
 
     private void Hide()
     {
-        text.DOFade(0 , showTime);
-        // text.CrossFadeAlpha(0, showTime, false);
+        //text.DOFade(0 , showTime);
+        text.CrossFadeAlpha(0, showTime, false);
     }
 }

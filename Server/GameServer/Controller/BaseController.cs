@@ -15,7 +15,7 @@ namespace GameServer.Controller
     /// <returns></returns>
     abstract public class BaseController
     {
-        private RequestCode _requestCode = RequestCode.None;
+        protected RequestCode _requestCode = RequestCode.None;
 
         public RequestCode RequestCode => _requestCode;
         

@@ -45,7 +45,7 @@ namespace GameServer.Servers
                     RequestCode requestCode = (RequestCode)BitConverter.ToInt32(data, 4);
                     ActionCode actionCode = (ActionCode)BitConverter.ToInt32(data, 8);
                     string s = Encoding.UTF8.GetString(data, 12, count - 8);
-                    prossDataCallback(requestCode, actionCode, s); // 解析出来的消息处理放在 Client 里面 OnProssMessage 方法来进行，实现这里只需要进行消息的解析
+                    prossDataCallback(requestCode, actionCode, s); // 解析出来的消息处理放在 Client 里面 OnProcessMessage 方法来进行，实现这里只需要进行消息的解析
                     Array.Copy(data, count + 4, data, 0, startIndex - 4 - count);
                     startIndex -= (count + 4);
                 }
@@ -57,9 +57,9 @@ namespace GameServer.Servers
         }
         
         // 数据包装
-        public static byte[] PackData(RequestCode requestCode, string data)
+        public static byte[] PackData(ActionCode actionCode, string data)
         {
-            byte[] requestCodeBytes = BitConverter.GetBytes((int)requestCode);
+            byte[] requestCodeBytes = BitConverter.GetBytes((int)actionCode);
             byte[] dataBytes = Encoding.UTF8.GetBytes(data);
             int dataAmount = requestCodeBytes.Length + dataBytes.Length;
             byte[] dataAmountBytes = BitConverter.GetBytes(dataAmount);

@@ -75,23 +75,28 @@ public class GameFacade : MonoBehaviour
         DestroryManager();
     }
 
-    public void AddRequest(RequestCode requestCode, BaseRequest baseRequest)
+    public void AddRequest(ActionCode actionCode, BaseRequest baseRequest)
     {
-        requestMng.AddRequest(requestCode, baseRequest);
+        requestMng.AddRequest(actionCode, baseRequest);
     }
 
-    public void RemoveRequest(RequestCode requestCode)
+    public void RemoveRequest(ActionCode actionCode)
     {
-        requestMng.RemoveRequest(requestCode);
+        requestMng.RemoveRequest(actionCode);
     }
 
-    public void HandleResponse(RequestCode requestCode, string data)
+    public void HandleResponse(ActionCode actionCode, string data)
     {
-        requestMng.HandleResponse(requestCode, data);
+        requestMng.HandleResponse(actionCode, data);
     }
 
     public void ShowMessage(string msg)
     {
         uiMng.ShowMessage(msg);
+    }
+
+    public void SendRequest(RequestCode requestCode, ActionCode actionCode, string data)
+    {
+        clientMng.SendRequest(requestCode, actionCode, data);
     }
 }

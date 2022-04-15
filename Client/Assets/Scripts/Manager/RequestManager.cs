@@ -12,24 +12,24 @@ namespace Manager
         {
         }
         
-        private Dictionary<RequestCode, BaseRequest> requestDict = new Dictionary<RequestCode, BaseRequest>();
+        private Dictionary<ActionCode, BaseRequest> requestDict = new Dictionary<ActionCode, BaseRequest>();
 
-        public void AddRequest(RequestCode requestCode, BaseRequest baseRequest)
+        public void AddRequest(ActionCode actionCode, BaseRequest baseRequest)
         {
-            requestDict.Add(requestCode, baseRequest);
+            requestDict.Add(actionCode, baseRequest);
         }
 
-        public void RemoveRequest(RequestCode requestCode)
+        public void RemoveRequest(ActionCode actionCode)
         {
-            requestDict.Remove(requestCode);
+            requestDict.Remove(actionCode);
         }
         
-        public void HandleResponse(RequestCode requestCode, string data)
+        public void HandleResponse(ActionCode actionCode, string data)
         {
-            BaseRequest request =  requestDict.TryGet(requestCode);
+            BaseRequest request =  requestDict.TryGet(actionCode);
             if (request == null)
             {
-                Debug.LogWarning("无法得到 requestCode[" + requestCode + "] 对应的 Request 类");
+                Debug.LogWarning("无法得到 actionCode[" + actionCode + "] 对应的 Request 类");
                 return;
             }
             request.OnResponse(data);

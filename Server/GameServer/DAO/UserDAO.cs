@@ -1,0 +1,46 @@
+﻿using System;
+using GameServer.Model;
+using MySql.Data.MySqlClient;
+
+namespace GameServer.DAO
+{
+    public class UserDAO
+    {
+        public User VerifyUser(MySqlConnection sqlConnection, string username, string password)
+        {
+            MySqlDataReader reader = null;
+            try
+            {
+                //带参数的sql语句 @后代表参数名
+                MySqlCommand cmd =
+                    new MySqlCommand("Select * from user where username = @username and password = @password",
+                        sqlConnection);
+                cmd.Parameters.AddWithValue("username", username);
+                cmd.Parameters.AddWithValue("password", password);
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    int id = reader.GetInt32("id");
+                    User user = new User(id, username, password);
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("在 VerifyUser 的时候出现异常：" + e);
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+            }
+        }
+    }
+}

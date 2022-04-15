@@ -8,7 +8,7 @@ namespace Net
     public class Message
     {
         private byte[] data = new byte[1024];
-        private int startIndex = 0;//我们存取了多少个字节的数据在数组里面
+        private int startIndex = 0; //我们存取了多少个字节的数据在数组里面
 
         // public void AddCount(int count)
         // {
@@ -18,18 +18,21 @@ namespace Net
         {
             get { return data; }
         }
+
         public int StartIndex
         {
             get { return startIndex; }
         }
+
         public int RemainSize
         {
             get { return data.Length - startIndex; }
         }
+
         /// <summary>
         /// 解析数据或者叫做读取数据
         /// </summary>
-        public void ReadMessage(int newDataAmount, Action<RequestCode, string> prossDataCallback)
+        public void ReadMessage(int newDataAmount, Action<ActionCode, string> prossDataCallback)
         {
             startIndex += newDataAmount;
             while (true)
@@ -42,9 +45,9 @@ namespace Net
                     // Console.WriteLine(count);
                     // string s = Encoding.UTF8.GetString(data, 4, count);
                     // Console.WriteLine("解析出来一条数据：" + s);
-                    RequestCode requestCode = (RequestCode)BitConverter.ToInt32(data, 4);
+                    ActionCode actionCode = (ActionCode) BitConverter.ToInt32(data, 4);
                     string s = Encoding.UTF8.GetString(data, 8, count - 4);
-                    prossDataCallback(requestCode, s); // 解析出来的消息处理放在 Client 里面 OnProssMessage 方法来进行，实现这里只需要进行消息的解析
+                    prossDataCallback(actionCode, s); // 解析出来的消息处理放在 Client 里面 OnProssMessage 方法来进行，实现这里只需要进行消息的解析
                     Array.Copy(data, count + 4, data, 0, startIndex - 4 - count);
                     startIndex -= (count + 4);
                 }
@@ -54,16 +57,18 @@ namespace Net
                 }
             }
         }
-        
+
         // 数据包装
         public static byte[] PackData(RequestCode requestCode, ActionCode actionCode, string data)
         {
-            byte[] requestCodeBytes = BitConverter.GetBytes((int)requestCode);
+            byte[] requestCodeBytes = BitConverter.GetBytes((int) requestCode);
             byte[] actionCodeBytes = BitConverter.GetBytes((int) actionCode);
             byte[] dataBytes = Encoding.UTF8.GetBytes(data);
             int dataAmount = requestCodeBytes.Length + dataBytes.Length + actionCodeBytes.Length;
             byte[] dataAmountBytes = BitConverter.GetBytes(dataAmount);
-            return (byte[])dataAmountBytes.Concat(requestCodeBytes).Concat(actionCodeBytes).Concat(dataBytes);
+            return dataAmountBytes.Concat(requestCodeBytes).ToArray<byte>()
+                .Concat(actionCodeBytes).ToArray<byte>()
+                .Concat(dataBytes).ToArray<byte>();
         }
     }
 }

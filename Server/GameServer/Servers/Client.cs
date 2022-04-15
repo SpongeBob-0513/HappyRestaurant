@@ -16,7 +16,9 @@ namespace GameServer.Servers
         private Server server;
         private Message msg = new Message();
         private MySqlConnection mysqlConn;
-        
+
+        public MySqlConnection MysqlConn => mysqlConn;
+
         public Client(){}
 
         public Client(Socket clientSocket, Server server)
@@ -41,7 +43,7 @@ namespace GameServer.Servers
                     Close(); // 没有接收到数据，断开连接
                 }
             
-                msg.ReadMessage(count, OnProssMessage);
+                msg.ReadMessage(count, OnProcessMessage);
                 Start();
             }
             catch (Exception e)
@@ -52,7 +54,7 @@ namespace GameServer.Servers
             
         }
 
-        private void OnProssMessage(RequestCode requestCode, ActionCode actionCode, string data)
+        private void OnProcessMessage(RequestCode requestCode, ActionCode actionCode, string data)
         {
             server.HandleRequest(requestCode, actionCode, data, this);
         }
@@ -68,9 +70,9 @@ namespace GameServer.Servers
         }
         
         // 对返回给客户端的消息进行包装和发送
-        public void Send(RequestCode requestCode, string data)
+        public void Send(ActionCode actionCode, string data)
         {
-            byte[] bytes = Message.PackData(requestCode, data);
+            byte[] bytes = Message.PackData(actionCode, data);
             clientSocket.Send(bytes);
         }
     }

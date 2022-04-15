@@ -50,7 +50,7 @@ namespace Net
             {
                 int count = clientSocket.EndReceive(ar);
 
-                msg.ReadMessage(count, prossDataCallback);
+                msg.ReadMessage(count, processDataCallback);
                 
                 Start(); // 继续监听消息接收
             }
@@ -61,9 +61,9 @@ namespace Net
             }
         }
 
-        private void prossDataCallback(RequestCode requestCode, string data)
+        private void processDataCallback(ActionCode actionCode, string data)
         {
-            _gameFacade.HandleResponse(requestCode, data);
+            _gameFacade.HandleResponse(actionCode, data);
         }
 
         public void SendRequest(RequestCode requestCode, ActionCode actionCode, string data)

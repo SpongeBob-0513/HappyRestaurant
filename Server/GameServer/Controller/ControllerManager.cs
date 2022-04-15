@@ -25,6 +25,7 @@
         {
             DefaultController defaultController = new DefaultController();
             controllerDict.Add(defaultController.RequestCode, defaultController);
+            controllerDict.Add(RequestCode.User, new UserController());
         }
 
         public void HandleRequest(RequestCode requestCode, ActionCode actionCode, string data, Client client)
@@ -52,7 +53,7 @@
                 return;
             }
             
-            server.SendRespoonse(client, requestCode, o as string);
+            server.SendRespoonse(client, actionCode, o as string);
         }
     }
 }
