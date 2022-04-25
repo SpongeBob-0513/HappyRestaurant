@@ -5,8 +5,7 @@ D:\Projects\HappyRestaurant\Server\GameServer\bin\Debug\GameServer.pdb
 D:\Projects\HappyRestaurant\Server\GameServer\bin\Debug\Common.dll
 D:\Projects\HappyRestaurant\Server\GameServer\bin\Debug\Google.Protobuf.dll
 D:\Projects\HappyRestaurant\Server\GameServer\bin\Debug\Common.pdb
-D:\Projects\HappyRestaurant\Server\GameServer\obj\Debug\GameServer.csproj.CopyComplete
 D:\Projects\HappyRestaurant\Server\GameServer\obj\Debug\GameServer.exe
 D:\Projects\HappyRestaurant\Server\GameServer\obj\Debug\GameServer.pdb
-D:\Projects\HappyRestaurant\Server\GameServer\bin\Debug\MySql.Data.dll
 D:\Projects\HappyRestaurant\Server\GameServer\bin\Debug\MySql.Data.xml
+D:\Projects\HappyRestaurant\Server\GameServer\bin\Debug\MySql.Data.dll

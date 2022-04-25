@@ -26,7 +26,7 @@ namespace Manager
         
         public void HandleResponse(ActionCode actionCode, string data)
         {
-            BaseRequest request =  requestDict.TryGet(actionCode);
+            BaseRequest request = requestDict.TryGet(actionCode);
             if (request == null)
             {
                 Debug.LogWarning("无法得到 actionCode[" + actionCode + "] 对应的 Request 类");

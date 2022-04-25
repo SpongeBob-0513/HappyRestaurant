@@ -1,20 +1,18 @@
-﻿using System;
-using Common;
+﻿using Common;
 
 namespace Request
 {
-    public class LoginRequest:BaseRequest
+    public class RegisterRequest: BaseRequest
     {
-        private LoginPanel _loginPanel;
-
+        private RegisterPanel registerPanel;
+        
         public override void Awake()
         {
             _requestCode = RequestCode.User;
-            _actionCode = ActionCode.Login;
-            _loginPanel = GetComponent<LoginPanel>();
+            _actionCode = ActionCode.Register;
+            registerPanel = GetComponent<RegisterPanel>();
             base.Awake();
         }
-
         public void SendRequest(string username, string password)
         {
             string data = username + "," + password;
@@ -25,7 +23,7 @@ namespace Request
         {
             base.OnResponse(data);
             ReturnCode returnCode = (ReturnCode) int.Parse(data);
-            _loginPanel.OnLoginResponse(returnCode);
+            registerPanel.OnRegisterResponse(returnCode);
         }
     }
 }

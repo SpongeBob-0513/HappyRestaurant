@@ -69,13 +69,14 @@ public class LoginPanel : BasePanel
         }
         else
         {
-            uiMng.ShowMessage("用户名或密码错误，请重新输入");
+            uiMng.ShowMessageSync("用户名或密码错误，请重新输入"); // 因为这里接收服务端响应另外开的一个线程，所以需要异步访问 text 
+                                                                     // text 只能在 unity 的主线程中进行访问
         }
     }
 
     private void OnRegisterClick()
     {
-        
+        uiMng.PushPanel(UIPanelType.Register);
     }
 
     public override void OnExit() // PopPanel() 中调用 OnExit

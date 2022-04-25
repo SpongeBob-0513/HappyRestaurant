@@ -2,4 +2,5 @@
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CProgram_0020Files_0020_0028x86_0029_005CMySQL_005CConnector_0020NET_00208_002E0_005CAssemblies_005Cv4_002E5_002E2_005CMySql_002EData_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="C:\Program Files (x86)\MySQL\Connector NET 8.0\Assemblies\v4.5.2\MySql.Data.dll" /&gt;&#xD;
+  &lt;Assembly Path="D:\Projects\HappyRestaurant\Server\GameServer\bin\Debug\MySql.Data.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
