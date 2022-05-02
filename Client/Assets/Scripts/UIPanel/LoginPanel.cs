@@ -1,7 +1,7 @@
+using System;
 using Common;
 using DG.Tweening;
 using Request;
-using UIFramework.Manager;
 using UIPanel;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,18 +13,8 @@ public class LoginPanel : BasePanel
     private InputField passwordIF;
     private LoginRequest _loginRequest;
 
-    public override void OnEnter()
+    private void Start()
     {
-        base.OnEnter();
-        
-        gameObject.SetActive(true);
-
-        // 进入动画
-        transform.localScale = Vector3.zero;
-        transform.DOScale(0.5f, 0.2f);
-        transform.localPosition = new Vector3(1000, 0, 0);
-        transform.DOLocalMove(Vector3.one, 0.2f);
-
         _loginRequest = GetComponent<LoginRequest>();
         usernameIF = transform.Find("UsernameLable/UsernameInput").GetComponent<InputField>();
         passwordIF = transform.Find("PasswordLable/PasswordInput").GetComponent<InputField>();
@@ -34,15 +24,38 @@ public class LoginPanel : BasePanel
         transform.Find("RegisterButton").GetComponent<Button>().onClick.AddListener(OnRegisterClick);
     }
 
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        EnterAnim();
+    }
+
+    public override void OnPause()
+    {
+        base.OnPause();
+        HideAnim();
+    }
+
+    public override void OnResume()
+    {
+        base.OnResume();
+        EnterAnim();
+    }
+    
+    public override void OnExit() // PopPanel() 中调用 OnExit
+    {
+        HideAnim();
+    }
+
     private void OnCloseClick()
     {
-        transform.DOScale(0, 0.4f);
-        Tweener tweener = transform.DOLocalMove(new Vector3(1000, 0, 0), 0.4f);
-        tweener.OnComplete(() => { uiMng.PopPanel(); });
+        PlayClickSound();
+        uiMng.PopPanel();
     }
 
     private void OnLoginClick()
     {
+        PlayClickSound();
         string msg = "";
         if (string.IsNullOrEmpty(usernameIF.text))
         {
@@ -65,7 +78,7 @@ public class LoginPanel : BasePanel
     {
         if (returnCode == ReturnCode.Success)
         {
-            
+            uiMng.PushPanelSync(UIPanelType.RoomList);
         }
         else
         {
@@ -76,12 +89,23 @@ public class LoginPanel : BasePanel
 
     private void OnRegisterClick()
     {
+        PlayClickSound();
         uiMng.PushPanel(UIPanelType.Register);
     }
 
-    public override void OnExit() // PopPanel() 中调用 OnExit
+    private void EnterAnim()
     {
-        base.OnExit();
-        gameObject.SetActive(false);
+        // 进入动画
+        gameObject.SetActive(true);
+        transform.localScale = Vector3.zero;
+        transform.DOScale(0.5f, 0.2f);
+        transform.localPosition = new Vector3(1000, 0, 0);
+        transform.DOLocalMove(Vector3.one, 0.2f);
+    }
+
+    private void HideAnim()
+    {
+        transform.DOScale(0, 0.3f);
+        transform.DOLocalMoveX(1000, 0.3f).OnComplete(()=>{gameObject.SetActive(false);});
     }
 }

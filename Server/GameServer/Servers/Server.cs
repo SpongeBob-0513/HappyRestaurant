@@ -15,6 +15,7 @@ namespace GameServer.Servers
         private IPEndPoint _ipEndPoint;
         private Socket serverSocket;
         private List<Client> clientList = new List<Client>();
+        private  List<Room> roomList = new List<Room>();
         private ControllerManager controllerManager;
 
         public Server()
@@ -47,6 +48,7 @@ namespace GameServer.Servers
             Client client = new Client(clientSocket, this); // 在 Client 类中处理服务端客户端中的信息传递
             client.Start(); // 对应的客户端开始监听与服务器之间的消息传输
             clientList.Add(client);
+            serverSocket.BeginAccept(AcceptCallback, null);
         }
 
         public void RemoveClient(Client client)

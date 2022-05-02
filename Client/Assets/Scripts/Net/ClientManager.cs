@@ -48,8 +48,8 @@ namespace Net
         {
             try
             {
+                if(clientSocket == null || clientSocket.Connected == false) return;
                 int count = clientSocket.EndReceive(ar);
-
                 msg.ReadMessage(count, processDataCallback);
                 
                 Start(); // 继续监听消息接收

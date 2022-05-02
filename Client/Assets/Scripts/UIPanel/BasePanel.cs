@@ -1,4 +1,4 @@
-﻿using UIFramework.Manager;
+﻿using Manager;
 using UnityEngine;
 
 namespace UIPanel
@@ -11,11 +11,17 @@ namespace UIPanel
         {
             set { uiMng = value; }
         }
-
+        
         public GameFacade Facade
         {
             set { facade = value; }
         }
+        
+        protected void PlayClickSound()
+        {
+            facade.PlayNormalSound(AudioManager.SoundClick);
+        }
+
 
         /// <summary>
         /// 界面被显示出来

@@ -7,7 +7,8 @@ namespace GameServer.Controller
 {
     public class UserController:BaseController
     {
-        private UserDAO _userDAO = new UserDAO();
+        private UserDAO userDAO = new UserDAO();
+        private ResultDAO resultDAO = new ResultDAO();
         public UserController()
         {
             _requestCode = RequestCode.User;
@@ -16,14 +17,16 @@ namespace GameServer.Controller
         public string Login(string data, Client client, Server server)
         {
             string[] strs = data.Split(',');
-            User user =  _userDAO.VerifyUser(client.MysqlConn, strs[0], strs[1]);
+            User user =  userDAO.VerifyUser(client.MysqlConn, strs[0], strs[1]);
             if (user == null)
             {
                  return ((int)ReturnCode.Fail).ToString();
             }
             else
             {
-                return ((int)ReturnCode.Success).ToString();
+                Result result = resultDAO.GetResultByUserId(client.MysqlConn, user.Id);
+                return string.Format("{0}, {1}, {2}, {3}", ((int)ReturnCode.Success).ToString(), user.Username, result
+                    .TotalCount, result.MaxScore); // 字符串组拼
             }
         }
         
@@ -32,12 +35,12 @@ namespace GameServer.Controller
             string[] strs = data.Split(',');
             string username = strs[0];
             string password = strs[1];
-            bool res = _userDAO.GetUsername(client.MysqlConn, username);
+            bool res = userDAO.GetUsername(client.MysqlConn, username);
             if (res)
             {
                 return ((int) ReturnCode.Fail).ToString();
             }
-            _userDAO.AddUser(client.MysqlConn, username, password);
+            userDAO.AddUser(client.MysqlConn, username, password);
             return ((int) ReturnCode.Success).ToString();
         }
     }

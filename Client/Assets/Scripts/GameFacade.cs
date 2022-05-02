@@ -1,9 +1,8 @@
-using System;
 using Common;
 using Manager;
+using Model;
 using Net;
 using Request;
-using UIFramework.Manager;
 using UnityEngine;
 
 public class GameFacade : MonoBehaviour
@@ -38,10 +37,10 @@ public class GameFacade : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateManager();
     }
 
-      private void InitManager()
+    private void InitManager()
     {
         uiMng = new UIManager(this);
         audioMng = new AudioManager(this);
@@ -59,6 +58,16 @@ public class GameFacade : MonoBehaviour
         clientMng.OnInit();
     }
 
+    private void UpdateManager()
+    {
+        uiMng.Update();
+        audioMng.Update();
+        playerMng.Update();
+        cameraMng.Update();
+        cameraMng.Update();
+        requestMng.Update();
+        clientMng.Update();
+    }
     private void DestroryManager()
     {
         uiMng.OnDestroy();
@@ -98,5 +107,25 @@ public class GameFacade : MonoBehaviour
     public void SendRequest(RequestCode requestCode, ActionCode actionCode, string data)
     {
         clientMng.SendRequest(requestCode, actionCode, data);
+    }
+
+    public void PlayBgSound(string soundName)
+    {
+        audioMng.PlayBgSound(soundName);
+    }
+
+    public void PlayNormalSound(string soundName)
+    {
+        audioMng.PlayNormalSound(soundName);
+    }
+
+    public void SetUserData(UserData userData)
+    {
+        playerMng.UserData = userData;
+    }
+
+    public UserData GetUserData()
+    {
+        return playerMng.UserData;
     }
 }

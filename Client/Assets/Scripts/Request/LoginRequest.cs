@@ -1,5 +1,6 @@
 ﻿using System;
 using Common;
+using Model;
 
 namespace Request
 {
@@ -24,8 +25,17 @@ namespace Request
         public override void OnResponse(string data)
         {
             base.OnResponse(data);
-            ReturnCode returnCode = (ReturnCode) int.Parse(data);
+            string[] strs = data.Split(',');
+            ReturnCode returnCode = (ReturnCode) int.Parse(strs[0]);
             _loginPanel.OnLoginResponse(returnCode);
+            if (returnCode == ReturnCode.Success)
+            {
+                string username = strs[1];
+                int totalCount = int.Parse(strs[2]);
+                int maxScore = int.Parse(strs[3]);
+                UserData userData = new UserData(username, totalCount, maxScore);
+                _facade.SetUserData(userData);
+            }
         }
     }
 }

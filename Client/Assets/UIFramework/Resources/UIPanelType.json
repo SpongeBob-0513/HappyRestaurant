@@ -16,6 +16,10 @@
     {
       "panelTypeString": "Register",
       "path": "UIPanel/RegisterPanel"
+    },
+    {
+      "panelTypeString": "RoomList",
+      "path": "UIPanel/RoomListPanel"
     }
   ]
 }
