@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using Common;
+using GameServer.Model;
 using GameServer.Tool;
 using MySql.Data.MySqlClient;
 
@@ -16,8 +17,32 @@ namespace GameServer.Servers
         private Server server;
         private Message msg = new Message();
         private MySqlConnection mysqlConn;
+        private Room room;
+        private User user;
+        private Result result;
 
         public MySqlConnection MysqlConn => mysqlConn;
+
+        public void SetUserData(User user, Result result)
+        {
+            this.user = user;
+            this.result = result;
+        }
+
+        public string GetUserData()
+        {
+            return user.Id + "," + user.Username + "," + result.TotalCount + "," + result.MaxScore;
+        }
+
+        public Room Room
+        {
+            set => room = value;
+        }
+
+        public int GetUserId()
+        {
+            return user.Id;
+        }
 
         public Client(){}
 
@@ -38,6 +63,7 @@ namespace GameServer.Servers
         {
             try
             {
+                if(clientSocket == null || clientSocket.Connected == false) return;
                 int count = clientSocket.EndReceive(ar);
                 if (count == 0)
                 {
@@ -67,6 +93,10 @@ namespace GameServer.Servers
             {
                 clientSocket.Close();
                 server.RemoveClient(this);
+                if (room != null)
+                {
+                    room.Close(this);
+                }
             }
         }
         
