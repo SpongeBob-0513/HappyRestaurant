@@ -24,6 +24,10 @@ public class RoomPanel : BasePanel
     private UserData ud = null;
     private UserData ud1 = null;
     private UserData ud2 = null;
+
+    private QuitRoomRequest quitRoomRequest;
+
+    private bool isPopPanel = false;
     
     private void Start()
     {
@@ -42,6 +46,8 @@ public class RoomPanel : BasePanel
 
         transform.Find("StartButton").GetComponent<Button>().onClick.AddListener(OnStartClick);
         transform.Find("ExitButton").GetComponent<Button>().onClick.AddListener(OnExitClick);
+
+        quitRoomRequest = GetComponent<QuitRoomRequest>();
 
         EnterAnim();
     }
@@ -80,6 +86,14 @@ public class RoomPanel : BasePanel
         {
             SetP1Res(ud1.Username, ud1.TotalCount.ToString(), ud1.MaxScore.ToString());
             SetP2Res(ud2.Username, ud2.TotalCount.ToString(), ud2.MaxScore.ToString());
+            ud1 = null;
+            ud2 = null;
+        }
+
+        if (isPopPanel)
+        {
+            quitRoomRequest.SendRequest();
+            isPopPanel = false;
         }
     }
 
@@ -128,7 +142,12 @@ public class RoomPanel : BasePanel
 
     private void OnExitClick()
     {
-        
+        isPopPanel = true;
+    }
+
+    public void OnExitResponse()
+    {
+        uiMng.PopPanel();
     }
 
     private void EnterAnim()

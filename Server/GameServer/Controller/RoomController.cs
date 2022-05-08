@@ -56,7 +56,24 @@ namespace GameServer.Controller
             {
                 room.AddClient(client);
                 string roomData = room.GetRoomData();
+                room.BroadcastMessage(client, ActionCode.UpdateRoom, roomData);  // 广播给房主有玩家加入 更新房间信息
                 return ((int) ReturnCode.Success).ToString() + "-" + roomData;
+            }
+        }
+
+        public string QuitRoom(string data, Client client, Server server)
+        {
+            bool isHouseOwner = client.IsHouseOwner();
+            if (isHouseOwner)
+            {
+                //TODO 房主退出
+                return "";
+            }
+            else
+            {
+                client.Room.RemoveClient(client);
+                //TODO 广播退出房间的消息
+                return ((int) ReturnCode.Success).ToString();
             }
         }
     }

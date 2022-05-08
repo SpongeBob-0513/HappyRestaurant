@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Common;
 
 namespace GameServer.Servers
 {
@@ -34,6 +35,20 @@ namespace GameServer.Servers
             if (clientRoom.Count >= 2)
             {
                 state = RoomState.WaitingPlay;
+            }
+        }
+
+        public void RemoveClient(Client client)
+        {
+            client.Room = null;
+            clientRoom.Remove(client);
+            if (clientRoom.Count >= 2)
+            {
+                state = RoomState.WaitingPlay;
+            }
+            else
+            {
+                state = RoomState.WaitingJoin;
             }
         }
 
@@ -78,6 +93,22 @@ namespace GameServer.Servers
             }
 
             return sb.ToString();
+        }
+
+        public void BroadcastMessage(Client excludeClient, ActionCode actionCode, string data)
+        {
+            foreach (var client in clientRoom)
+            {
+                if (client != excludeClient)
+                {
+                    server.SendRespoonse(client, actionCode, data);
+                }
+            }
+        }
+
+        public bool IsHouseOwner(Client client)
+        {
+            return client == clientRoom[0];
         }
     }
 }

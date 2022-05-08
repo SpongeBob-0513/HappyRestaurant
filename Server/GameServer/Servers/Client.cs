@@ -37,6 +37,7 @@ namespace GameServer.Servers
         public Room Room
         {
             set => room = value;
+            get => room;
         }
 
         public int GetUserId()
@@ -92,11 +93,11 @@ namespace GameServer.Servers
             if (clientSocket != null)
             {
                 clientSocket.Close();
-                server.RemoveClient(this);
                 if (room != null)
                 {
                     room.Close(this);
                 }
+                server.RemoveClient(this);
             }
         }
         
@@ -105,6 +106,11 @@ namespace GameServer.Servers
         {
             byte[] bytes = Message.PackData(actionCode, data);
             clientSocket.Send(bytes);
+        }
+
+        public bool IsHouseOwner()
+        {
+            return room.IsHouseOwner(this);
         }
     }
 }
