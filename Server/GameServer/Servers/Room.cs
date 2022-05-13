@@ -110,5 +110,24 @@ namespace GameServer.Servers
         {
             return client == clientRoom[0];
         }
+        
+        public void QuitRoom(Client client)
+        {
+            if (client == clientRoom[0])
+            {
+                Close();
+            }
+            else
+                clientRoom.Remove(client);
+        }
+
+        public void Close()
+        {
+            foreach (var client in clientRoom)
+            {
+                client.Room = null;
+            }
+            server.RemoveRoom(this);
+        }
     }
 }

@@ -21,7 +21,10 @@ namespace Request
             UserData ud2 = null;
             string[] udstrArray = data.Split('|');
             ud1 = new UserData(udstrArray[0]);
-            ud2 = new UserData(udstrArray[1]);
+            if (udstrArray.Length > 1)
+            {
+                ud2 = new UserData(udstrArray[1]);
+            }
             roomPanel.SetAllPlayerResSync(ud1, ud2);
         }
     }

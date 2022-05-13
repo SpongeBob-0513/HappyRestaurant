@@ -1,4 +1,5 @@
 using System;
+using Common;
 using DG.Tweening;
 using Model;
 using Request;
@@ -26,6 +27,7 @@ public class RoomPanel : BasePanel
     private UserData ud2 = null;
 
     private QuitRoomRequest quitRoomRequest;
+    private StartGameRequest startGameRequest;
 
     private bool isPopPanel = false;
     
@@ -48,6 +50,7 @@ public class RoomPanel : BasePanel
         transform.Find("ExitButton").GetComponent<Button>().onClick.AddListener(OnExitClick);
 
         quitRoomRequest = GetComponent<QuitRoomRequest>();
+        startGameRequest = GetComponent<StartGameRequest>();
 
         EnterAnim();
     }
@@ -82,17 +85,24 @@ public class RoomPanel : BasePanel
             ud = null;
         }
 
-        if (ud1 != null || ud2 != null)
+        if (ud1 != null)
         {
             SetP1Res(ud1.Username, ud1.TotalCount.ToString(), ud1.MaxScore.ToString());
-            SetP2Res(ud2.Username, ud2.TotalCount.ToString(), ud2.MaxScore.ToString());
+            if (ud2 != null)
+            {
+                SetP2Res(ud2.Username, ud2.TotalCount.ToString(), ud2.MaxScore.ToString());
+            }
+            else
+            {
+                ClearP2Res();
+            }
             ud1 = null;
             ud2 = null;
         }
 
         if (isPopPanel)
         {
-            quitRoomRequest.SendRequest();
+            uiMng.PopPanel();
             isPopPanel = false;
         }
     }
@@ -137,17 +147,29 @@ public class RoomPanel : BasePanel
 
     private void OnStartClick()
     {
-        
+        startGameRequest.SendRequest();
+    }
+
+    public void OnStartResponse(ReturnCode returnCode)
+    {
+        if (returnCode == ReturnCode.Fail)
+        {
+            uiMng.ShowMessageSync("您不是房主，无法开始游戏！");
+        }
+        else
+        {
+            
+        }
     }
 
     private void OnExitClick()
     {
-        isPopPanel = true;
+        quitRoomRequest.SendRequest();
     }
 
     public void OnExitResponse()
     {
-        uiMng.PopPanel();
+        isPopPanel = true;
     }
 
     private void EnterAnim()

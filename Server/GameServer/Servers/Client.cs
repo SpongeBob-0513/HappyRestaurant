@@ -93,12 +93,12 @@ namespace GameServer.Servers
             if (clientSocket != null)
             {
                 clientSocket.Close();
-                if (room != null)
-                {
-                    room.Close(this);
-                }
-                server.RemoveClient(this);
             }
+            if (room != null)
+            {
+                room.QuitRoom(this);
+            }
+            server.RemoveClient(this);
         }
         
         // 对返回给客户端的消息进行包装和发送

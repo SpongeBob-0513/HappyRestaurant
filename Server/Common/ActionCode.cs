@@ -10,5 +10,6 @@
         JoinRoom, // 加入房间
         UpdateRoom, // 更新房间 有新的客户端加入房间
         QuitRoom,
+        StartGame,
     }
 }

@@ -23,16 +23,17 @@ namespace Request
 
         public override void OnResponse(string data)
         {
-            base.OnResponse(data);
-            if (data == "0") return;
+            base.OnResponse(data); 
             List<UserData> udList = new List<UserData>();
-            string[] udArray = data.Split('|');
-            foreach (var ud in udArray)
+            if (data != "0")
             {
-                string[] strs = ud.Split(',');
-                udList.Add(new UserData(int.Parse(strs[0]), strs[1], int.Parse(strs[2]), int.Parse(strs[3])));
+                string[] udArray = data.Split('|');
+                foreach (var ud in udArray)
+                {
+                    string[] strs = ud.Split(',');
+                    udList.Add(new UserData(int.Parse(strs[0]), strs[1], int.Parse(strs[2]), int.Parse(strs[3])));
+                }
             }
-
             roomListPanel.LoadRoomItemSync(udList);
         }
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Common;
 using DG.Tweening;
@@ -105,10 +104,11 @@ public class RoomListPanel : BasePanel
     {
         listRoomRequest.SendRequest();  // 向服务器端重新申请房间信息
     }
-
+    
     private void EnterAnim()
     {
         gameObject.SetActive(true);
+        
         personalInform.localPosition = new Vector3(-1000, 0);
         personalInform.DOLocalMoveX(-219, 0.5f);
         

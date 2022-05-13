@@ -5,5 +5,6 @@
         None,
         User,
         Room,
+        Game,
     }
 }
