@@ -104,8 +104,16 @@ namespace GameServer.Servers
         // 对返回给客户端的消息进行包装和发送
         public void Send(ActionCode actionCode, string data)
         {
-            byte[] bytes = Message.PackData(actionCode, data);
-            clientSocket.Send(bytes);
+            try
+            {
+                byte[] bytes = Message.PackData(actionCode, data);
+                clientSocket.Send(bytes);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("无法发送消息：" + e);
+                throw;
+            }
         }
 
         public bool IsHouseOwner()

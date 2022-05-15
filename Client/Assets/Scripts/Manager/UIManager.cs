@@ -8,24 +8,6 @@ namespace Manager
 {
     public class UIManager : BaseManager
     {
-        /// 
-        /// 单例模式的核心
-        /// 1，定义一个静态的对象 在外界访问 在内部构造
-        /// 2，构造方法私有化
-
-        //private static UIManager _instance;
-
-        //public static UIManager Instance
-        //{
-        //    get
-        //    {
-        //        if (_instance == null)
-        //        {
-        //            _instance = new UIManager();
-        //        }
-        //        return _instance;
-        //    }
-        //}
         private Transform canvasTransform;
         private Transform CanvasTransform
         {
@@ -45,6 +27,7 @@ namespace Manager
         private Stack<BasePanel> panelStack;
         private MessagePanel msgPanel;
         private UIPanelType panelTypeToPush = UIPanelType.None;
+        private bool isPopPanel = false;
 
         public UIManager(GameFacade _gameFacade) : base(_gameFacade)
         {
@@ -65,12 +48,15 @@ namespace Manager
                 PushPanel(panelTypeToPush);
                 panelTypeToPush = UIPanelType.None;
             }
+
+            if (isPopPanel)
+            {
+                PopPanel();
+                isPopPanel = false;
+            }
         }
 
-        public void PushPanelSync(UIPanelType panelType)
-        {
-            panelTypeToPush = panelType;
-        }
+        
 
         /// <summary>
         /// 把某个页面入栈，  把某个页面显示在界面上
@@ -93,6 +79,11 @@ namespace Manager
             return panel;
         }
 
+        public void PushPanelSync(UIPanelType panelType)
+        {
+            panelTypeToPush = panelType;
+        }
+        
         /// <summary>
         /// 出栈 ，把页面从界面上移除
         /// </summary>
@@ -110,6 +101,11 @@ namespace Manager
             if (panelStack.Count <= 0) return;
             BasePanel topPanel2 = panelStack.Peek();
             topPanel2.OnResume();
+        }
+        
+        public void PopPanelSync()
+        {
+            isPopPanel = true;
         }
 
         /// <summary>

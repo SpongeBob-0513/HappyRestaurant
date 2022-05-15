@@ -16,6 +16,7 @@ namespace Manager
         public const string SoundFry = "FrySound";
         public const string SoundPan = "PanSound";
         public const string SoundWater = "WaterSound";
+        public const string SoundTimer = "TimerSound";
 
         private AudioSource bgAudioSource;
         private AudioSource normalAudioSource;

@@ -26,7 +26,7 @@ namespace GameServer.Controller
             {
                 Result result = resultDAO.GetResultByUserId(client.MysqlConn, user.Id);
                 client.SetUserData(user, result);
-                return string.Format("{0}, {1}, {2}, {3}", ((int)ReturnCode.Success).ToString(), user.Username, result
+                return string.Format("{0},{1},{2},{3}", ((int)ReturnCode.Success).ToString(), user.Username, result
                     .TotalCount, result.MaxScore); // 字符串组拼
             }
         }

@@ -7,12 +7,10 @@ using UnityEngine.UI;
 public class StartPanel : BasePanel
 {
     private Button loginButton;
-    private Animator btnAnimator;
     public override void OnEnter()
     {
         base.OnEnter();
         loginButton = transform.Find("LoginButton").GetComponent<Button>();
-        btnAnimator = loginButton.GetComponent<Animator>();
         loginButton.onClick.AddListener(OnLoginClick);
     }
 

@@ -14,7 +14,7 @@ namespace GameServer.Controller
         public string CreateRoom(string data, Client client, Server server)
         {
             server.CreateRoom(client);
-            return ((int) ReturnCode.Success).ToString();
+            return ((int) ReturnCode.Success).ToString() + "," + ((int) RoleType.Chef1).ToString();
         }
         
         public string ListRoom(string data, Client client, Server server)
@@ -57,7 +57,7 @@ namespace GameServer.Controller
                 room.AddClient(client);
                 string roomData = room.GetRoomData();
                 room.BroadcastMessage(client, ActionCode.UpdateRoom, roomData);  // 广播给房主有玩家加入 更新房间信息
-                return ((int) ReturnCode.Success).ToString() + "-" + roomData;
+                return ((int) ReturnCode.Success).ToString() + "," + ((int) RoleType.Chef2).ToString() + "-" + roomData;
             }
         }
 

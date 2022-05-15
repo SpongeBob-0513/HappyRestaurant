@@ -29,8 +29,6 @@ public class RoomPanel : BasePanel
     private QuitRoomRequest quitRoomRequest;
     private StartGameRequest startGameRequest;
 
-    private bool isPopPanel = false;
-    
     private void Start()
     {
         P1Username = transform.Find("P1Panel/Username").GetComponent<Text>();
@@ -99,12 +97,6 @@ public class RoomPanel : BasePanel
             ud1 = null;
             ud2 = null;
         }
-
-        if (isPopPanel)
-        {
-            uiMng.PopPanel();
-            isPopPanel = false;
-        }
     }
 
     public override void OnExit()
@@ -158,7 +150,8 @@ public class RoomPanel : BasePanel
         }
         else
         {
-            
+            uiMng.PushPanelSync(UIPanelType.Game);
+            facade.EnterPlayingSync();
         }
     }
 
@@ -169,7 +162,7 @@ public class RoomPanel : BasePanel
 
     public void OnExitResponse()
     {
-        isPopPanel = true;
+        uiMng.PopPanelSync();
     }
 
     private void EnterAnim()

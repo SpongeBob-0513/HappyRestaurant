@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Common;
 
 namespace GameServer.Servers
@@ -56,19 +57,7 @@ namespace GameServer.Servers
         {
             return clientRoom[0].GetUserData();
         }
-
-        public void Close(Client client)
-        {
-            if (client == clientRoom[0])
-            {
-                server.RemoveRoom(this);
-            }
-            else
-            {
-                clientRoom.Remove(client);
-            }
-        }
-
+        
         public int GetId()
         {
             if (clientRoom.Count > 0)
@@ -120,7 +109,7 @@ namespace GameServer.Servers
             else
                 clientRoom.Remove(client);
         }
-
+        
         public void Close()
         {
             foreach (var client in clientRoom)
@@ -128,6 +117,22 @@ namespace GameServer.Servers
                 client.Room = null;
             }
             server.RemoveRoom(this);
+        }
+
+        public void StartTimer()
+        {
+            new Thread(RunTimer).Start();
+        }
+
+        private void RunTimer()
+        {
+            Thread.Sleep(1000);
+            for (int i = 3; i > 0 ; i--)
+            {
+                BroadcastMessage(null, ActionCode.ShowTimer, i.ToString());
+                Thread.Sleep(1000);
+            }
+            BroadcastMessage(null, ActionCode.StartPlay, "r");
         }
     }
 }
