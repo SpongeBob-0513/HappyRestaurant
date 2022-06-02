@@ -130,6 +130,12 @@ public class RoomListPanel : BasePanel
         transform.Find("PersonalInform/MaxScore").GetComponent<Text>().text = "最高得分：" + userData.MaxScore;
     }
 
+    public void OnUpdateResultResponse(int totalCount, int maxCount)
+    {
+        facade.UpdateResult(totalCount, maxCount);
+        SetPersonalInfom();
+    }
+
     public void LoadRoomItemSync(List<UserData> udList)
     {
         this.udList = udList;

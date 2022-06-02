@@ -35,7 +35,7 @@ namespace Request
                 ud2 = new UserData(udstrArray[1]);
                 
                 RoleType roleType = (RoleType) int.Parse(strs2[1]);
-                _facade.SetCurrentRoleType(roleType);
+                facade.SetCurrentRoleType(roleType);
             }
             roomListPanel.OnJoinResponse(returnCode, ud1, ud2);
         }

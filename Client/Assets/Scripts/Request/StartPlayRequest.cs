@@ -17,7 +17,7 @@ namespace Request
         {
             if (isStartPlaying)
             {
-                _facade.StartPlaying();
+                facade.StartPlaying();
                 isStartPlaying = false;
             }
         }

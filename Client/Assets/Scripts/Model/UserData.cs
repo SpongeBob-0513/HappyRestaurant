@@ -27,7 +27,7 @@
         
         public int Id { get; private set; }
         public string Username { get; private set; }
-        public int TotalCount { get; private set; }
-        public int MaxScore { get; private set; }
+        public int TotalCount { get; set; }
+        public int MaxScore { get; set; }
     }
 }

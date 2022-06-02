@@ -34,7 +34,7 @@ namespace Request
                 int totalCount = int.Parse(strs[2]);
                 int maxScore = int.Parse(strs[3]);
                 UserData userData = new UserData(username, totalCount, maxScore);
-                _facade.SetUserData(userData);
+                facade.SetUserData(userData);
             }
         }
     }

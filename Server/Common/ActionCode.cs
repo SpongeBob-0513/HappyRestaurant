@@ -17,10 +17,10 @@
         ShowTimer, // 显示倒计时
         StartPlay, // 开始玩游戏
         Move,
-        Cut,
-        PickRobot,
-        PutRobot,
-        GetFood,
-        PutDish,
+        MakeFood,
+        Score,
+        GameOver,
+        UpdateResult,
+        QuitPlaying,
     }
 }

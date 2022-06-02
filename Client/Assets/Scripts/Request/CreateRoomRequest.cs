@@ -31,7 +31,7 @@ namespace Request
             string[] strs = data.Split(',');
             ReturnCode returnCode = (ReturnCode) int.Parse(strs[0]);
             RoleType roleType = (RoleType) int.Parse(strs[1]);
-            _facade.SetCurrentRoleType(roleType);
+            facade.SetCurrentRoleType(roleType);
             if (returnCode == ReturnCode.Success)
             {
                 roomPanel.SetP1ResSync();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using Common;
+using GameServer.DAO;
 using GameServer.Model;
 using GameServer.Tool;
 using MySql.Data.MySqlClient;
@@ -20,7 +21,8 @@ namespace GameServer.Servers
         private Room room;
         private User user;
         private Result result;
-
+        private ResultDAO resultDAO = new ResultDAO();
+        
         public MySqlConnection MysqlConn => mysqlConn;
 
         public void SetUserData(User user, Result result)
@@ -119,6 +121,27 @@ namespace GameServer.Servers
         public bool IsHouseOwner()
         {
             return room.IsHouseOwner(this);
+        }
+
+        public void UpdateResult(int score)
+        {
+            UpdateResultToDB(score);
+            UpdateResultToClient();
+        }
+
+        private void UpdateResultToDB(int score)
+        {
+            result.TotalCount++;
+            if (score > result.MaxScore)
+            {
+                result.MaxScore = score;
+                resultDAO.UpdateOrAddResult(mysqlConn, result);
+            }
+        }
+
+        private void UpdateResultToClient()
+        {
+            Send(ActionCode.UpdateResult, string.Format("{0},{1}", result.TotalCount, result.MaxScore));
         }
     }
 }

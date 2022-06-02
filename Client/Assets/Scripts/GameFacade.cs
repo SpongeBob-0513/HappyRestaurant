@@ -9,7 +9,17 @@ public class GameFacade : MonoBehaviour
 {
     // 单例模式 整个客户端只设置这一个单例
     private static GameFacade _instance;
-    public static GameFacade Instance => _instance;
+    public static GameFacade Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.Find("GameFacade").GetComponent<GameFacade>();
+            }
+            return _instance;
+        }
+    }
 
     private UIManager uiMng;
     private AudioManager audioMng;
@@ -20,15 +30,15 @@ public class GameFacade : MonoBehaviour
 
     private bool isEnterPlaying;
 
-    private void Awake()
-    {
-        if (_instance != null)
-        {
-            Destroy(this.gameObject); return;
-        }
-
-        _instance = this;
-    }
+    // private void Awake()
+    // {
+    //     if (_instance != null)
+    //     {
+    //         Destroy(this.gameObject); return;
+    //     }
+    //
+    //     _instance = this;
+    // }
 
     // Start is called before the first frame update
     void Start()
@@ -161,5 +171,21 @@ public class GameFacade : MonoBehaviour
     {
         playerMng.AddControlScript();
         playerMng.CreateSyncRequest();
+    }
+
+    public void SendScore(int score)
+    {
+        playerMng.SendScore(score);
+    }
+
+    public void GameOver()
+    {
+        cameraMng.BackDefaultPos();
+        playerMng.GameOver();
+    }
+
+    public void UpdateResult(int totalCount, int maxScore)
+    {
+        playerMng.UpdateResult(totalCount, maxScore);
     }
 }

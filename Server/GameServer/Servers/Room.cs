@@ -18,6 +18,9 @@ namespace GameServer.Servers
         private List<Client> clientRoom = new List<Client>(); // 储存当前房间的所有客户端
         private RoomState state = RoomState.WaitingJoin;
         private Server server;
+        
+        public int totalScore = 0;
+        public int targetDishCount = 3;
 
         public Room(Server server)
         {
@@ -133,6 +136,14 @@ namespace GameServer.Servers
                 Thread.Sleep(1000);
             }
             BroadcastMessage(null, ActionCode.StartPlay, "r");
+        }
+
+        public void UpdateResult(int score)
+        {
+            foreach (var client in clientRoom)
+            {
+                client.UpdateResult(score);
+            }
         }
     }
 }
